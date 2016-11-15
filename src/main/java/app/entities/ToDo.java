@@ -8,32 +8,48 @@ import javax.persistence.Id;
 @Entity
 public class ToDo {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+	private static int counter = 0;
 
-    private String name;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private long id;
 
-    public String getName() {
+	private String name;
 
-        return this.name;
-    }
+	public ToDo() {
+		super();
+		this.name = new Integer(ToDo.counter).toString();
+		ToDo.counter++;
+	}
 
-    public void setName(final String name) {
+	public long getId() {
+		return this.id;
+	}
 
-        this.name = name;
-    }
+	public void setId(final long id) {
+		this.id = id;
+	}
 
-    @Override
-    public String toString() {
+	public String getName() {
 
-        final StringBuilder builder = new StringBuilder();
-        builder.append("ToDo [id=");
-        builder.append(this.id);
-        builder.append(", name=");
-        builder.append(this.name);
-        builder.append("]");
-        return builder.toString();
-    }
+		return this.name;
+	}
+
+	public void setName(final String name) {
+
+		this.name = name;
+	}
+
+	@Override
+	public String toString() {
+
+		final StringBuilder builder = new StringBuilder();
+		builder.append("ToDo [id=");
+		builder.append(this.id);
+		builder.append(", name=");
+		builder.append(this.name);
+		builder.append("]");
+		return builder.toString();
+	}
 
 }
