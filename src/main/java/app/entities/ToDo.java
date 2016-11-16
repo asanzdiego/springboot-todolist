@@ -18,7 +18,7 @@ public class ToDo {
 
 	public ToDo() {
 		super();
-		this.name = new Integer(ToDo.counter).toString();
+		this.name = "Name of " + ToDo.counter;
 		ToDo.counter++;
 	}
 
