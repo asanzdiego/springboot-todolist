@@ -22,83 +22,90 @@ import app.repositories.ToDoRepository;
 @RestController
 public class ToDoController {
 
-	@Resource
-	private ToDoRepository toDoRepository;
+    @Resource
+    private ToDoRepository toDoRepository;
 
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public ResponseEntity<String> create() {
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public ResponseEntity<String> create() {
 
-		final int toDosCreadas = 100;
+        final int toDosCreadas = 100;
 
-		for (int i = 0; i < toDosCreadas; i++) {
+        for (int i = 0; i < toDosCreadas; i++) {
 
-			this.toDoRepository.save(new ToDo());
-		}
+            this.toDoRepository.save(new ToDo());
+        }
 
-		return new ResponseEntity<>(toDosCreadas + " tareas creadas", HttpStatus.OK);
-	}
+        return new ResponseEntity<>(toDosCreadas + " tareas creadas", HttpStatus.OK);
+    }
 
-	@RequestMapping(value = "/todo", method = RequestMethod.GET)
-	public ResponseEntity<Page<ToDo>> getAll(
-			@RequestParam(value = "page", required = false, defaultValue = "0") final int page,
-			@RequestParam(value = "size", required = false, defaultValue = "10") final int size) {
+    @RequestMapping(value = "/todo", method = RequestMethod.GET)
+    public ResponseEntity<Page<ToDo>> getAll(
+            @RequestParam(value = "page", required = false, defaultValue = "0") final int page,
+            @RequestParam(value = "size", required = false, defaultValue = "10") final int size,
+            @RequestParam(value = "name", required = false, defaultValue = "") final String name) {
 
-		final Page<ToDo> result = this.toDoRepository
-				.findAll(new PageRequest(page, size, new Sort(Sort.Direction.ASC, "name")));
+        if ("".equals(name)) {
 
-		return new ResponseEntity<>(result, HttpStatus.OK);
-	}
+            final Page<ToDo> result = this.toDoRepository
+                    .findAll(new PageRequest(page, size, new Sort(Sort.Direction.ASC, "name")));
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
 
-	@RequestMapping(value = "/todo", method = RequestMethod.POST)
-	public ResponseEntity<ToDo> create(@RequestBody final ToDo toDo) {
+        final Page<ToDo> result = this.toDoRepository.findByName(name,
+                new PageRequest(page, size, new Sort(Sort.Direction.ASC, "name")));
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 
-		final ToDo result = this.toDoRepository.save(toDo);
+    @RequestMapping(value = "/todo", method = RequestMethod.POST)
+    public ResponseEntity<ToDo> create(@RequestBody final ToDo toDo) {
 
-		return new ResponseEntity<>(result, HttpStatus.OK);
-	}
+        final ToDo result = this.toDoRepository.save(toDo);
 
-	@RequestMapping(value = "/todo/{id}", method = RequestMethod.GET)
-	public ResponseEntity<ToDo> get(@PathVariable final Long id) {
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 
-		final ToDo result = this.toDoRepository.findOne(id);
+    @RequestMapping(value = "/todo/{id}", method = RequestMethod.GET)
+    public ResponseEntity<ToDo> get(@PathVariable final Long id) {
 
-		if (result == null) {
+        final ToDo result = this.toDoRepository.findOne(id);
 
-			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-		}
+        if (result == null) {
 
-		return new ResponseEntity<>(result, HttpStatus.OK);
-	}
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
 
-	@RequestMapping(value = "/todo/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<ToDo> update(@PathVariable final Long id, @RequestBody final ToDo toDo) {
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 
-		final ToDo result = this.toDoRepository.findOne(id);
+    @RequestMapping(value = "/todo/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<ToDo> update(@PathVariable final Long id, @RequestBody final ToDo toDo) {
 
-		if (result == null) {
+        final ToDo result = this.toDoRepository.findOne(id);
 
-			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-		}
+        if (result == null) {
 
-		result.setName(toDo.getName());
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
 
-		this.toDoRepository.save(result);
+        result.setName(toDo.getName());
 
-		return new ResponseEntity<>(result, HttpStatus.OK);
-	}
+        this.toDoRepository.save(result);
 
-	@RequestMapping(value = "/todo/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<ToDo> delete(@PathVariable final Long id) {
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 
-		final ToDo result = this.toDoRepository.findOne(id);
+    @RequestMapping(value = "/todo/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<ToDo> delete(@PathVariable final Long id) {
 
-		if (result == null) {
+        final ToDo result = this.toDoRepository.findOne(id);
 
-			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-		}
+        if (result == null) {
 
-		this.toDoRepository.delete(result);
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
 
-		return new ResponseEntity<>(result, HttpStatus.OK);
-	}
+        this.toDoRepository.delete(result);
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 }

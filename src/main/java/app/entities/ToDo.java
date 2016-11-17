@@ -8,48 +8,50 @@ import javax.persistence.Id;
 @Entity
 public class ToDo {
 
-	private static int counter = 0;
+    private static int counter = 0;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
 
-	private String name;
+    private String name;
 
-	public ToDo() {
-		super();
-		this.name = "Name of " + ToDo.counter;
-		ToDo.counter++;
-	}
+    public ToDo() {
+        super();
+        this.name = "Name of " + ToDo.counter;
+        ToDo.counter++;
+    }
 
-	public long getId() {
-		return this.id;
-	}
+    public long getId() {
 
-	public void setId(final long id) {
-		this.id = id;
-	}
+        return this.id;
+    }
 
-	public String getName() {
+    public void setId(final long id) {
 
-		return this.name;
-	}
+        this.id = id;
+    }
 
-	public void setName(final String name) {
+    public String getName() {
 
-		this.name = name;
-	}
+        return this.name;
+    }
 
-	@Override
-	public String toString() {
+    public void setName(final String name) {
 
-		final StringBuilder builder = new StringBuilder();
-		builder.append("ToDo [id=");
-		builder.append(this.id);
-		builder.append(", name=");
-		builder.append(this.name);
-		builder.append("]");
-		return builder.toString();
-	}
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+
+        final StringBuilder builder = new StringBuilder();
+        builder.append("ToDo [id=");
+        builder.append(this.id);
+        builder.append(", name=");
+        builder.append(this.name);
+        builder.append("]");
+        return builder.toString();
+    }
 
 }
