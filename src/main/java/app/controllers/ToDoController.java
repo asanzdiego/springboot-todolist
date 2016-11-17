@@ -41,7 +41,7 @@ public class ToDoController {
     @RequestMapping(value = "/todo", method = RequestMethod.GET)
     public ResponseEntity<Page<ToDo>> getAll(
             @RequestParam(value = "page", required = false, defaultValue = "0") final int page,
-            @RequestParam(value = "size", required = false, defaultValue = "10") final int size,
+            @RequestParam(value = "size", required = false, defaultValue = "100") final int size,
             @RequestParam(value = "name", required = false, defaultValue = "") final String name) {
 
         if ("".equals(name)) {
